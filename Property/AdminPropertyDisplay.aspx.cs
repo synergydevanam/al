@@ -42,13 +42,33 @@ public partial class AdminPropertyDisplay : System.Web.UI.Page
 
     private void showPropertyGrid()
     {
+        /*
         string searchString = "";
         if (hfHasSearchCompleted.Value == "0" && Request.QueryString["SearchKey"]!=null)
         {
             hfHasSearchCompleted.Value = "1";
             searchString = "Where AL_Property.ExtraField1 like '%" + Request.QueryString["SearchKey"] + "%' or AL_Property.Address like '%" + Request.QueryString["SearchKey"] + "%'";        
         }
-        gvProperty.DataSource = PropertyManager.GetAllPropertiesSearch(searchString);
+         * */
+        gvProperty.DataSource = PropertyManager.GetAllPropertiesSearch("Where AL_Property.PropertyID in (0" + getLogin().ExtraField3 + ")");
         gvProperty.DataBind();
+        /*gvProperty.DataSource = PropertyManager.GetAllPropertiesSearch(searchString);
+        gvProperty.DataBind();
+         * */
+    }
+
+    private Login getLogin()
+    {
+        Login login = new Login();
+        try
+        {
+            if (Session["Login"] == null) { Session["PreviousPage"] = HttpContext.Current.Request.Url.AbsoluteUri; Response.Redirect("../LoginPage.aspx"); }
+
+            login = (Login)Session["Login"];
+        }
+        catch (Exception ex)
+        { }
+
+        return login;
     }
 }

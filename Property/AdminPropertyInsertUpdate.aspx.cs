@@ -35,12 +35,22 @@ public partial class AdminPropertyInsertUpdate : System.Web.UI.Page
                     btnAdd.Visible = false;
                     btnUpdate.Visible = true;
                     showPropertyData();
+                    lblCompany.Visible = false;
+                    txtCompany.Visible = false;
                 }
             }
         }
     }
     protected void btnAdd_Click(object sender, EventArgs e)
     {
+        if (Session["Login"] == null) { Session["PreviousPage"] = HttpContext.Current.Request.Url.AbsoluteUri; Response.Redirect("../LoginPage.aspx"); }
+        int loginID = ((Login)Session["Login"]).LoginID;
+        string companyID = ddlCompnay.SelectedValue;
+        if (txtCompany.Text.Trim() != "")
+        {
+            companyID = CommonManager.SQLExec(@"insert into AL_Company values('" + txtCompany.Text + @"');Select top 1 CompanyID from AL_Company order by CompanyID desc").Tables[0].Rows[0][0].ToString();
+        }
+
         Property property = new Property();
 
         property.PropertyName = txtPropertyName.Text;
@@ -52,13 +62,21 @@ public partial class AdminPropertyInsertUpdate : System.Web.UI.Page
         property.ExtraField2 = txtExtraField2.Text;
         property.ExtraField3 = txtExtraField3.Text;
         property.ExtraField4 = txtExtraField4.Text;
-        property.ExtraField5 = ddlCompnay.SelectedValue;
+        property.ExtraField5 = companyID;
         property.ExtraField6 = txtExtraField6.Text;
-        property.ExtraField7 = ddlStatus.SelectedValue; 
+        property.ExtraField7 = ddlStatus.SelectedValue;
         property.ExtraField8 = txtExtraField8.Text;
         property.ExtraField9 = txtExtraField9.Text;
         property.ExtraField10 = txtExtraField10.Text;
         int resutl = PropertyManager.InsertProperty(property);
+
+        Login log = (Login)Session["Login"];
+        CommonManager.SQLExec("update Login_Login set ExtraField3='" + (log.ExtraField3.Trim() == "" ? "" : ",") + resutl + @"' where LoginID=" + loginID);
+        Login login = LoginManager.GetLoginByLoginName(((Login)Session["Login"]).LoginName.ToString());
+        if (login != null)
+        {
+            Session["Login"] = login;
+        }
         Response.Redirect("AdminPropertyDisplay.aspx");
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
@@ -84,6 +102,8 @@ public partial class AdminPropertyInsertUpdate : System.Web.UI.Page
         tempProperty.ExtraField9 = txtExtraField9.Text;
         tempProperty.ExtraField10 = txtExtraField10.Text;
         bool result = PropertyManager.UpdateProperty(tempProperty);
+
+
         Response.Redirect("AdminPropertyDisplay.aspx");
     }
     protected void btnClear_Click(object sender, EventArgs e)
@@ -93,7 +113,7 @@ public partial class AdminPropertyInsertUpdate : System.Web.UI.Page
         ddlCountry.SelectedIndex = 0;
         ddlState.SelectedIndex = 0;
         ddlCity.SelectedIndex = 0;
-        ddlCompnay.SelectedIndex=0;
+        ddlCompnay.SelectedIndex = 0;
         txtExtraField1.Text = "";
         txtExtraField2.Text = "";
         txtExtraField3.Text = "";
@@ -121,7 +141,7 @@ public partial class AdminPropertyInsertUpdate : System.Web.UI.Page
         txtExtraField4.Text = property.ExtraField4;
         ddlCompnay.SelectedValue = property.ExtraField5;
         txtExtraField6.Text = property.ExtraField6;
-        ddlStatus.SelectedValue = property.ExtraField7=="InActive"?"InActive":"Active";
+        ddlStatus.SelectedValue = property.ExtraField7 == "InActive" ? "InActive" : "Active";
         txtExtraField8.Text = property.ExtraField8;
         txtExtraField9.Text = property.ExtraField9;
         txtExtraField10.Text = property.ExtraField10;

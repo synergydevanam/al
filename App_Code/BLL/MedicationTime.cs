@@ -167,9 +167,7 @@ public class MedicationTime
         set { _extraField6 = value; }
     }
     private string _extraField7;
-    /// <summary>
-    /// Date Expires
-    /// </summary>
+
     public string ExtraField7
     {
         get { return _extraField7; }

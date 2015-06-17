@@ -74,10 +74,6 @@ public partial class AdminLoginDisplay : System.Web.UI.Page
                     bool needToDelete = true;
                     foreach (string propertyID in login.ExtraField3.Split(','))
                     {
-                        //for test property
-                        if (item.LoginID != getLogin().LoginID && propertyID == "4")
-                            continue;
-
                         if (("," + item.ExtraField3 + ",").Contains("," + propertyID + ","))
                         {
                             needToDelete = false;
@@ -100,93 +96,7 @@ public partial class AdminLoginDisplay : System.Web.UI.Page
         {
             allTheUsersNewlyAdded = allTheUsers;
         }
-
-        lblCount.Text = "Total Count : " + allTheUsersNewlyAdded.Count.ToString();
         gvLogin.DataSource = allTheUsersNewlyAdded;
         gvLogin.DataBind();
-    }
-    protected void btnSearch_Click(object sender, EventArgs e)
-    {
-        List<Login> allTheUsers = LoginManager.GetAllLogins();
-        List<Login> allTheUsersNewlyAdded = new List<Login>();
-        Login login = getLogin();
-        if (!("," + login.ExtraField1 + ",").Contains(",1,"))
-        {
-            foreach (Login item in allTheUsers)
-            {
-                bool needToadd = true;
-                if (("," + item.ExtraField1 + ",").Contains(",1,"))
-                {
-                    needToadd = false;
-                }
-                else
-                {
-                    bool needToDelete = true;
-                    foreach (string propertyID in login.ExtraField3.Split(','))
-                    {
-                        if (("," + item.ExtraField3 + ",").Contains("," + propertyID + ","))
-                        {
-                            needToDelete = false;
-                            break;
-                        }
-                    }
-                    if (needToDelete)
-                    {
-                        needToadd = false;
-                    }
-                }
-
-                if (needToadd)
-                {
-                    if (AddUserBySearchCriteria(txtSearch.Text, item))
-                    {
-                        allTheUsersNewlyAdded.Add(item);
-                    }
-                    
-                }
-            }
-        }
-        else
-        {
-            foreach (Login item in allTheUsers)
-            {
-                if (AddUserBySearchCriteria(txtSearch.Text, item))
-                {
-                    allTheUsersNewlyAdded.Add(item);
-                }
-            }
-        }
-        lblCount.Text = "Total Count : "+allTheUsersNewlyAdded.Count.ToString();
-        gvLogin.DataSource = allTheUsersNewlyAdded;
-        gvLogin.DataBind();
-    }
-
-    private bool AddUserBySearchCriteria(string searchCriteria,Login user)
-    {
-        bool needToAdd = false;
-        if (searchCriteria != "")
-        {
-            if (
-                user.FirstName.ToUpper().Contains(searchCriteria.ToUpper())
-                ||
-                user.LastName.ToUpper().Contains(searchCriteria.ToUpper())
-                ||
-                (user.FirstName + " " + user.LastName).ToUpper().Contains(searchCriteria.ToUpper())
-                ||
-                user.Email.ToUpper().Contains(searchCriteria.ToUpper())
-                ||
-                user.CellPhone.ToUpper().Contains(searchCriteria.ToUpper())
-                ||
-                user.HomePhone.ToUpper().Contains(searchCriteria.ToUpper())
-                ||
-                user.WorkPhone.ToUpper().Contains(searchCriteria.ToUpper())
-                )
-                needToAdd = true;
-        }
-        else
-        {
-            needToAdd = true;
-        }
-        return needToAdd;
     }
 }

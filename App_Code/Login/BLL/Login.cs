@@ -230,6 +230,9 @@ public class Login
     }
 
     private string _extraField5;
+    /// <summary>
+    /// Card Holder name
+    /// </summary>
     public string ExtraField5
     {
         get { return _extraField5; }
@@ -237,6 +240,9 @@ public class Login
     }
 
     private string _extraField6;
+    /// <summary>
+    /// Card No
+    /// </summary>
     public string ExtraField6
     {
         get { return _extraField6; }
@@ -244,6 +250,9 @@ public class Login
     }
 
     private string _extraField7;
+    /// <summary>
+    /// Expire date of the card
+    /// </summary>
     public string ExtraField7
     {
         get { return _extraField7; }
@@ -251,6 +260,9 @@ public class Login
     }
 
     private string _extraField8;
+    /// <summary>
+    /// CSC and Card Type
+    /// </summary>
     public string ExtraField8
     {
         get { return _extraField8; }
@@ -258,6 +270,9 @@ public class Login
     }
 
     private string _extraField9;
+    /// <summary>
+    /// Resident No
+    /// </summary>
     public string ExtraField9
     {
         get { return _extraField9; }
@@ -265,6 +280,9 @@ public class Login
     }
 
     private string _extraField10;
+    /// <summary>
+    /// Total Amount paid
+    /// </summary>
     public string ExtraField10
     {
         get { return _extraField10; }

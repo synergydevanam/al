@@ -26,7 +26,7 @@
                                 <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+                                <%--<asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />--%>
                             </td>
                             <td style='padding-left:250px;'>
                                 <asp:Button ID="btnAdd" runat="server" Text="Add User" OnClick="btnAdd_Click" />
