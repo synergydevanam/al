@@ -1,0 +1,60 @@
+<%@ Page Language="C#" AutoEventWireup="true"   MasterPageFile="~/Default.master"  CodeFile="AdminTour.aspx.cs" Inherits="AdminTour" Title="Tour Insert/Update By Admin" %>
+ <asp:Content ID="head" runat="server" ContentPlaceHolderID="head">
+ </asp:Content>
+ <asp:Content ID="ContentPlaceHolder1" runat="server" ContentPlaceHolderID="ContentPlaceHolder1">
+<div class="content-box">
+<div class="header">
+<h3>Insert /UpdateTour</h3>
+</div>
+<div class="inner-form">
+<!-- error and information messages -->
+  	<dl>
+    <dt>
+     <asp:Label ID="lblCustomerID" runat="server" Text="Customer: ">
+    </asp:Label>
+     </dt>
+    <dd>
+    <asp:DropDownList ID="ddlCustomerID" runat="server">
+     </asp:DropDownList>
+     </dd>
+    <dt>
+     <asp:Label ID="lblTourName" runat="server" Text="Tour Name: ">
+    </asp:Label>
+     </dt>
+    <dd>
+     <asp:TextBox ID="txtTourName" class="txt large-input" runat="server" Text="">
+    </asp:TextBox>
+     </dd>
+    <dt>
+     <asp:Label ID="lblTourStatusID" runat="server" Text="Tour Status: ">
+    </asp:Label>
+     </dt>
+    <dd>
+    <asp:DropDownList ID="ddlTourStatusID" runat="server">
+     </asp:DropDownList>
+     </dd>
+    <dt>
+     <asp:Label ID="lblTourDate" runat="server" Text="Tour Date: ">
+    </asp:Label>
+     </dt>
+    <dd>
+     <asp:TextBox ID="txtTourDate" class="txt large-input" runat="server" Text="">
+    </asp:TextBox>
+     </dd>
+    <dt>
+     <asp:Label ID="lblTourTime" runat="server" Text="Tour Time: ">
+    </asp:Label>
+     </dt>
+    <dd>
+     <asp:TextBox ID="txtTourTime" class="txt large-input" runat="server" Text="">
+    </asp:TextBox>
+     </dd>
+ <dt></dt>
+ <dd>
+<asp:Button ID="btnAdd" class="button button-blue" runat="server" Text="Add" OnClick="btnAdd_Click" />
+<asp:Button ID="btnUpdate" class="button button-blue" runat="server" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
+ </dd>
+ </dl></div>
+ </div>
+ </asp:Content>
+

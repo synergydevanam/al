@@ -1,0 +1,130 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
+ public partial class AdminCustomer : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+    {
+ //           loadCustomerData();
+         		RelationshipIDLoad();
+		IncomeIDLoad();
+
+            if (Request.QueryString["ID"] != null)
+            {
+                int ID = Int32.Parse(Request.QueryString["ID"]);
+                    btnAdd.Visible = false;
+                    btnUpdate.Visible = true;
+                    showCustomerData();
+                }
+        }
+    }
+	protected void btnAdd_Click(object sender, EventArgs e)
+		{
+	Customer customer = new Customer ();
+//	customer.CustomerID=  int.Parse(ddlCustomerID.SelectedValue);
+	customer.FirstName=  txtFirstName.Text;
+	customer.LastName=  txtLastName.Text;
+	customer.Age=  int.Parse(txtAge.Text);
+	customer.GuestName=  txtGuestName.Text;
+	customer.GuestAge=  int.Parse(txtGuestAge.Text);
+	customer.RelationshipID=  int.Parse(ddlRelationshipID.SelectedValue);
+	customer.IncomeID=  int.Parse(ddlIncomeID.SelectedValue);
+	customer.PrimaryPhone=  txtPrimaryPhone.Text;
+	customer.SecondaryPhone=  txtSecondaryPhone.Text;
+	customer.Address1=  txtAddress1.Text;
+	customer.Address2=  txtAddress2.Text;
+	customer.City=  txtCity.Text;
+	customer.State=  int.Parse(txtState.Text);
+	customer.Country=  int.Parse(txtCountry.Text);
+	customer.Business=  txtBusiness.Text;
+	customer.Email=  txtEmail.Text;
+	int resutl =CustomerManager.InsertCustomer(customer);
+	Response.Redirect("AdminDisplayCustomer.aspx");
+	}
+	protected void btnUpdate_Click(object sender, EventArgs e)
+		{
+	Customer customer = new Customer ();
+	customer.CustomerID=  int.Parse(Request.QueryString["ID"].ToString());
+	customer.FirstName=  txtFirstName.Text;
+	customer.LastName=  txtLastName.Text;
+	customer.Age=  int.Parse(txtAge.Text);
+	customer.GuestName=  txtGuestName.Text;
+	customer.GuestAge=  int.Parse(txtGuestAge.Text);
+	customer.RelationshipID=  int.Parse(ddlRelationshipID.SelectedValue);
+	customer.IncomeID=  int.Parse(ddlIncomeID.SelectedValue);
+	customer.PrimaryPhone=  txtPrimaryPhone.Text;
+	customer.SecondaryPhone=  txtSecondaryPhone.Text;
+	customer.Address1=  txtAddress1.Text;
+	customer.Address2=  txtAddress2.Text;
+	customer.City=  txtCity.Text;
+	customer.State=  int.Parse(txtState.Text);
+	customer.Country=  int.Parse(txtCountry.Text);
+	customer.Business=  txtBusiness.Text;
+	customer.Email=  txtEmail.Text;
+	bool  resutl =CustomerManager.UpdateCustomer(customer);
+	Response.Redirect("AdminDisplayCustomer.aspx");
+	}
+	private void showCustomerData()
+	{
+	 	Customer customer  = new Customer ();
+	 	customer = CustomerManager.GetCustomerByCustomerID(Int32.Parse(Request.QueryString["ID"]));
+	 	txtFirstName.Text =customer.FirstName.ToString();
+	 	txtLastName.Text =customer.LastName.ToString();
+	 	txtAge.Text =customer.Age.ToString();
+	 	txtGuestName.Text =customer.GuestName.ToString();
+	 	txtGuestAge.Text =customer.GuestAge.ToString();
+	 	ddlRelationshipID.SelectedValue  =customer.RelationshipID.ToString();
+	 	ddlIncomeID.SelectedValue  =customer.IncomeID.ToString();
+	 	txtPrimaryPhone.Text =customer.PrimaryPhone.ToString();
+	 	txtSecondaryPhone.Text =customer.SecondaryPhone.ToString();
+	 	txtAddress1.Text =customer.Address1.ToString();
+	 	txtAddress2.Text =customer.Address2.ToString();
+	 	txtCity.Text =customer.City.ToString();
+	 	txtState.Text =customer.State.ToString();
+	 	txtCountry.Text =customer.Country.ToString();
+	 	txtBusiness.Text =customer.Business.ToString();
+	 	txtEmail.Text =customer.Email.ToString();
+	}
+	
+	private void RelationshipIDLoad()
+	{
+		try {
+		DataSet ds = RelationshipManager.GetDropDownListAllRelationship();
+		ddlRelationshipID.DataValueField = "RelationshipID";
+		ddlRelationshipID.DataTextField = "RelationshipName";
+		ddlRelationshipID.DataSource = ds.Tables[0];
+		ddlRelationshipID.DataBind();
+		ddlRelationshipID.Items.Insert(0, new ListItem("Select Relationship >>", "0"));
+		}
+		catch (Exception ex) {
+		ex.Message.ToString();
+		}
+	 }
+	private void IncomeIDLoad()
+	{
+		try {
+		DataSet ds = IncomeManager.GetDropDownListAllIncome();
+		ddlIncomeID.DataValueField = "IncomeID";
+		ddlIncomeID.DataTextField = "IncomeName";
+		ddlIncomeID.DataSource = ds.Tables[0];
+		ddlIncomeID.DataBind();
+		ddlIncomeID.Items.Insert(0, new ListItem("Select Income >>", "0"));
+		}
+		catch (Exception ex) {
+		ex.Message.ToString();
+		}
+	 }
+}
+

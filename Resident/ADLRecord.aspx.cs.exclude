@@ -1,0 +1,137 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Resident_ADLRecord : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            loadResident();
+            loadADLItemDescription();
+            loadADLStatus();
+            //showADLItemGrid();
+            if (Request.QueryString["ResidentID"]!=null)
+            {
+                ddlResidentID.SelectedValue = Request.QueryString["ResidentID"];
+                ddlResidentID_SelectedIndexChanged(this, new EventArgs());
+            }
+        }
+    }
+
+    private void loadADLItemDescription()
+    {
+        ListItem li = new ListItem("Select Description...", "0");
+        ddlADLItemDescription.Items.Add(li);
+
+        List<ADLItemDescription> aDLItemDescriptions = new List<ADLItemDescription>();
+        aDLItemDescriptions = ADLItemDescriptionManager.GetAllADLItemDescriptions();
+        foreach (ADLItemDescription aDLItemDescription in aDLItemDescriptions)
+        {
+            ListItem item = new ListItem(aDLItemDescription.ADLItemDescriptionName.ToString(), aDLItemDescription.ADLItemDescriptionID.ToString());
+            ddlADLItemDescription.Items.Add(item);
+        }
+    }
+    private void loadADLStatus()
+    {
+        ListItem li = new ListItem("Select Status...", "0");
+        ddlADLStatus.Items.Add(li);
+
+        List<ADLStatus> aDLStatuss = new List<ADLStatus>();
+        aDLStatuss = ADLStatusManager.GetAllADLStatuss();
+        foreach (ADLStatus aDLStatus in aDLStatuss)
+        {
+            ListItem item = new ListItem(aDLStatus.ADLStatusName.ToString(), aDLStatus.ADLStatusID.ToString());
+            ddlADLStatus.Items.Add(item);
+        }
+    }
+
+    private void loadResident()
+    {
+        ListItem li = new ListItem("Select Resident...", "0");
+        ddlResidentID.Items.Add(li);
+
+        List<Resident> residents = new List<Resident>();
+        residents = ResidentManager.GetAllResidents();
+        foreach (Resident resident in residents)
+        {
+            ListItem item = new ListItem(resident.Name.ToString(), resident.ResidentID.ToString());
+            ddlResidentID.Items.Add(item);
+        }
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        ADLItem aDLItem = new ADLItem();
+
+        aDLItem.ADLItemName = "";
+        aDLItem.ADLItemDescriptionID = Int32.Parse(ddlADLItemDescription.SelectedValue);
+        aDLItem.ADLStatusID = Int32.Parse(ddlADLStatus.SelectedValue);
+        aDLItem.ResidentID = Int32.Parse(ddlResidentID.SelectedValue);
+        aDLItem.IteamTime = DateTime.Parse(DateTime.Parse(txtAptDate.Text).ToString("yyyy-MM-dd") +" "+ txtApttime.Text);
+        aDLItem.Comment = txtComment.Text;
+        aDLItem.ExtraField1 = "";
+        aDLItem.ExtraField2 = "";
+        aDLItem.ExtraField3 = "";
+        aDLItem.ExtraField4 = "";
+        aDLItem.ExtraField5 = "";
+        aDLItem.ExtraField6 = "";
+        aDLItem.ExtraField7 = "";
+        aDLItem.ExtraField8 = "";
+        aDLItem.ExtraField9 = "";
+        aDLItem.ExtraField10 ="";
+        int resutl = ADLItemManager.InsertADLItem(aDLItem);
+        ddlADLItemDescription.SelectedIndex = 0;
+        ddlADLStatus.SelectedIndex = 0;
+        txtComment.Text = "";
+        txtAptDate.Text = "";
+        txtApttime.Text = "";
+
+        showADLItemGrid();
+    }
+    protected void lbSelect_Click(object sender, EventArgs e)
+    {
+        LinkButton linkButton = new LinkButton();
+        linkButton = (LinkButton)sender;
+        int id;
+        id = Convert.ToInt32(linkButton.CommandArgument);
+        Response.Redirect("AdminADLItemInsertUpdate.aspx?aDLItemID=" + id);
+    }
+    protected void lbDelete_Click(object sender, EventArgs e)
+    {
+        LinkButton linkButton = new LinkButton();
+        linkButton = (LinkButton)sender;
+        bool result = ADLItemManager.DeleteADLItem(Convert.ToInt32(linkButton.CommandArgument));
+        showADLItemGrid();
+    }
+
+    private void showADLItemGrid()
+    {
+        gvADLItem.DataSource = ADLItemManager.SearchADLItems(" where AL_ADLItem.ResidentID ="+ddlResidentID.SelectedValue);
+        gvADLItem.DataBind();
+    }
+    protected void ddlResidentID_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlResidentID.SelectedIndex != 0)
+        {
+            List<Resident> SelectedResidents = new List<Resident>();
+            Resident SelectedResident = new Resident();
+            SelectedResident = ResidentManager.GetResidentByID(int.Parse(ddlResidentID.SelectedValue));
+            SelectedResidents.Add(SelectedResident);
+            gvResident.DataSource = SelectedResidents;
+            gvResident.DataBind();
+
+            gvADLItem.DataSource = ADLItemManager.SearchADLItems(" where AL_ADLItem.ResidentID =" + ddlResidentID.SelectedValue);
+            gvADLItem.DataBind();
+
+        }
+        else
+        {
+            gvADLItem.DataSource = ADLItemManager.SearchADLItems("");
+            gvADLItem.DataBind();
+        }
+    }
+}

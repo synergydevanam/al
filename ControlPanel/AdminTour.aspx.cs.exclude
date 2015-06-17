@@ -1,0 +1,97 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
+ public partial class AdminTour : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+    {
+ //           loadTourData();
+         		CustomerIDLoad();
+		TourStatusIDLoad();
+
+            if (Request.QueryString["ID"] != null)
+            {
+                int ID = Int32.Parse(Request.QueryString["ID"]);
+                    btnAdd.Visible = false;
+                    btnUpdate.Visible = true;
+                    showTourData();
+                }
+        }
+    }
+	protected void btnAdd_Click(object sender, EventArgs e)
+		{
+	Tour tour = new Tour ();
+//	tour.TourID=  int.Parse(ddlTourID.SelectedValue);
+	tour.CustomerID=  int.Parse(ddlCustomerID.SelectedValue);
+	tour.TourName=  txtTourName.Text;
+	tour.TourStatusID=  int.Parse(ddlTourStatusID.SelectedValue);
+	tour.TourDate=   DateTime.Parse(txtTourDate.Text);
+	tour.TourTime=  txtTourTime.Text;
+	int resutl =TourManager.InsertTour(tour);
+	Response.Redirect("AdminDisplayTour.aspx");
+	}
+	protected void btnUpdate_Click(object sender, EventArgs e)
+		{
+	Tour tour = new Tour ();
+	tour.TourID=  int.Parse(Request.QueryString["ID"].ToString());
+	tour.CustomerID=  int.Parse(ddlCustomerID.SelectedValue);
+	tour.TourName=  txtTourName.Text;
+	tour.TourStatusID=  int.Parse(ddlTourStatusID.SelectedValue);
+	tour.TourDate=   DateTime.Parse(txtTourDate.Text);
+	tour.TourTime=  txtTourTime.Text;
+	bool  resutl =TourManager.UpdateTour(tour);
+	Response.Redirect("AdminDisplayTour.aspx");
+	}
+	private void showTourData()
+	{
+	 	Tour tour  = new Tour ();
+	 	tour = TourManager.GetTourByTourID(Int32.Parse(Request.QueryString["ID"]));
+	 	ddlCustomerID.SelectedValue  =tour.CustomerID.ToString();
+	 	txtTourName.Text =tour.TourName.ToString();
+	 	ddlTourStatusID.SelectedValue  =tour.TourStatusID.ToString();
+	 	txtTourDate.Text =tour.TourDate.ToString();
+	 	txtTourTime.Text =tour.TourTime.ToString();
+	}
+	
+	private void CustomerIDLoad()
+	{
+		try {
+		DataSet ds = CustomerManager.GetDropDownListAllCustomer();
+		ddlCustomerID.DataValueField = "CustomerID";
+		ddlCustomerID.DataTextField = "CustomerName";
+		ddlCustomerID.DataSource = ds.Tables[0];
+		ddlCustomerID.DataBind();
+		ddlCustomerID.Items.Insert(0, new ListItem("Select Customer >>", "0"));
+		}
+		catch (Exception ex) {
+		ex.Message.ToString();
+		}
+	 }
+	private void TourStatusIDLoad()
+	{
+		try {
+		DataSet ds = TourStatusManager.GetDropDownListAllTourStatus();
+		ddlTourStatusID.DataValueField = "TourStatusID";
+		ddlTourStatusID.DataTextField = "TourStatusName";
+		ddlTourStatusID.DataSource = ds.Tables[0];
+		ddlTourStatusID.DataBind();
+		ddlTourStatusID.Items.Insert(0, new ListItem("Select TourStatus >>", "0"));
+		}
+		catch (Exception ex) {
+		ex.Message.ToString();
+		}
+	 }
+}
+
