@@ -95,7 +95,9 @@ CodeFile="AdminResidentInsertUpdateInitial.aspx.cs" Inherits="AdminResidentInser
     
     <table width="100%">
     <tr>
-        <td><p>Resident info</p></td>
+        <td><p>Resident info</p>
+        <asp:Label ID="lblResidentCalculation" runat="server" Text=""></asp:Label>
+        </td>
         <td style="float:right;padding-right:8px;"><p>
         <asp:Label ID="lblMsg1" runat="server" ForeColor="Green"   Text="Update Successfully"  Visible="false"></asp:Label>
         

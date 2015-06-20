@@ -22,6 +22,7 @@ public partial class AdminResidentInsertUpdate : System.Web.UI.Page
             loadInitialValue();
             loadProperty();
             fileUpload.Visible = false;
+            calculateResident();
             if (Request.QueryString["residentID"] != null)
             {
                 fileUpload.Visible = true;
@@ -49,7 +50,17 @@ public partial class AdminResidentInsertUpdate : System.Web.UI.Page
             }
         }
     }
-
+    private void calculateResident()
+    {
+        Login loggeduser = getLogin();
+        DataSet ds = CommonManager.SQLExec("Select ExtraField9,AddedResident from Login_Login where LoginID=(Select RootUser from Login_Login where LoginID=" + loggeduser.LoginID + ")");
+        lblResidentCalculation.Text = "Total Resident Allowed : " + ds.Tables[0].Rows[0]["ExtraField9"].ToString() + " Added: " + ds.Tables[0].Rows[0]["AddedResident"].ToString() + " Available: "
+            + (decimal.Parse(ds.Tables[0].Rows[0]["ExtraField9"].ToString()) - decimal.Parse(ds.Tables[0].Rows[0]["AddedResident"].ToString())).ToString("0");
+        if ((decimal.Parse(ds.Tables[0].Rows[0]["ExtraField9"].ToString()) - decimal.Parse(ds.Tables[0].Rows[0]["AddedResident"].ToString())) == 0)
+        {
+            btnAdd.Enabled = false;
+        }
+    }
     private Login getLogin()
     {
         Login login = new Login();
