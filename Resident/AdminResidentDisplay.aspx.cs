@@ -77,7 +77,7 @@ public partial class AdminResidentDisplay : System.Web.UI.Page
         if (Request.QueryString["SearchKey"] != null && hfHasSearchDone.Value=="0")
         {
             hfHasSearchDone.Value = "1";
-            searchString += " and AL_Resident.Address  like '%" + Request.QueryString["SearchKey"] + "%' or  AL_Resident.Name like '%" + Request.QueryString["SearchKey"] + "%' ";
+            searchString += " and (AL_Resident.Address  like '%" + Request.QueryString["SearchKey"] + "%' or  AL_Resident.Name like '%" + Request.QueryString["SearchKey"] + "%' )";
         }
         searchString += " order by AL_Property.PropertyID, AL_Resident.Name";
 
