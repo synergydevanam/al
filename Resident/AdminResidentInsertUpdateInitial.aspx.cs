@@ -65,7 +65,7 @@ public partial class AdminResidentInsertUpdate : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            lblResidentCalculation.Text = "You don't t access to add Resident.";
+            lblResidentCalculation.Text = "You don't have access to add Resident.";
             btnAdd.Enabled = false;
         }
     }
