@@ -25,7 +25,7 @@
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;">
-                                    Compnay
+                                    Company
                                 </td>
                                 <td style="border-bottom: 1px solid #8E8F8F; width: 406px;">
                                     <asp:Label ID="lblCompnayName" runat="server" Text=""></asp:Label>
