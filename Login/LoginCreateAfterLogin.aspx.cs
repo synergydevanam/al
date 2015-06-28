@@ -200,10 +200,23 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         login.ExtraField9 = "";
         login.ExtraField10 = "";
         int resutl = LoginManager.InsertLogin(login);
-
+        updateStep2OfRegistration(resutl);
         lblMsg.Text = "Added Successfully<br/>";
         lblMsg.ForeColor = System.Drawing.Color.Green;
         //Response.Redirect("AdminLoginDisplay.aspx");
+    }
+
+    private void updateStep2OfRegistration(int loginID)
+    {
+        string sql = @"update [Login_Login] set [ExtraField5]='" + txtCardHolderName.Text + @"'
+                 ,[ExtraField6]='" + txtCardNO.Text + @"'
+                 ,[ExtraField7]='" + txtExpireDate.Text + @"'
+                 ,[ExtraField8]='" + txtCSC.Text + @"@" + ddlCardType.SelectedValue + @"'
+                 ,[ExtraField9]='" + txtResidentNumber.Text + @"'
+                 ,[ExtraField10]='" + ((decimal.Parse(txtResidentNumber.Text) * decimal.Parse("1.00")) + decimal.Parse("99.00")).ToString("0.00") + @"'
+                where [LoginID]=" + loginID;
+
+        CommonManager.SQLExec(sql);
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
