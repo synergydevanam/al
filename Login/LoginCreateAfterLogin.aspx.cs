@@ -215,12 +215,10 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         login.ExtraField9 = "";
         login.ExtraField10 = "";
         int resutl = LoginManager.InsertLogin(login);
-        if (tbluserType.Visible) { }
-        else
-        {
+        if (tbluserType.Visible) {
             if (rbtnUserType.SelectedValue == "OtherUser")
             {
-                CommonManager.SQLExec("update Login_Login set  RootUser=(select RootUser from Login_Login where LoginID=" + getLogin().LoginID + ") where LoginID=" + resutl);
+                CommonManager.SQLExec("update Login_Login set  RootUser="+ddlLogin.SelectedValue+" where LoginID=" + resutl);
             }
             else
             {
@@ -230,11 +228,16 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
                  ,[ExtraField8]='" + txtCSC.Text + @"@" + ddlCardType.SelectedValue + @"'
                  ,[ExtraField9]='" + txtResidentNumber.Text + @"'
                  ,[ExtraField10]='" + ((decimal.Parse(txtResidentNumber.Text) * decimal.Parse("1.00")) + decimal.Parse("99.00")).ToString("0.00") + @"'
-                ,RootUser ="+resutl+@",[AddedResident]=0             
+                ,RootUser =" + resutl + @",[AddedResident]=0             
                 where [LoginID]=" + resutl;
 
                 CommonManager.SQLExec(sql);
             }
+        }
+        else
+        {
+            CommonManager.SQLExec("update Login_Login set  RootUser=(select RootUser from Login_Login where LoginID=" + getLogin().LoginID + ") where LoginID=" + resutl);
+            
         }
         lblMsg.Text = "Added Successfully<br/>";
         lblMsg.ForeColor = System.Drawing.Color.Green;
@@ -313,7 +316,27 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         tempLogin.ExtraField9 = login.ExtraField9;
         tempLogin.ExtraField10 = login.ExtraField10; 
         bool result = LoginManager.UpdateLogin(tempLogin);
+        if (tbluserType.Visible)
+        {
+            if (rbtnUserType.SelectedValue == "OtherUser")
+            {
+                CommonManager.SQLExec("update Login_Login set  RootUser=" + ddlLogin.SelectedValue + " where LoginID=" + tempLogin.LoginID);
+            }
+            else
+            {
+                string sql = @"update [Login_Login] set --[ExtraField5]='" + txtCardHolderName.Text + @"'
+                 --,[ExtraField6]='" + txtCardNO.Text + @"'
+                 --,[ExtraField7]='" + txtExpireDate.Text + @"'
+                --- ,[ExtraField8]='" + txtCSC.Text + @"@" + ddlCardType.SelectedValue + @"'
+                 --,
+                    [ExtraField9]='" + txtResidentNumber.Text + @"'
+                 ,[ExtraField10]='" + ((decimal.Parse(txtResidentNumber.Text) * decimal.Parse("1.00")) + decimal.Parse("99.00")).ToString("0.00") + @"'
+                --,RootUser =" + tempLogin.LoginID + @",[AddedResident]=0             
+                where [LoginID]=" + tempLogin.LoginID;
 
+                CommonManager.SQLExec(sql);
+            }
+        }
         lblMsg.Text = "Updated Successfully<br/>";
         lblMsg.ForeColor = System.Drawing.Color.Green;
         
