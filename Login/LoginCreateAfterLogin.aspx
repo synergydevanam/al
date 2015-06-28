@@ -197,7 +197,7 @@
                             </td>
                         </tr>
                     </table>
-                    <table ID="tblMainUser" runat="server" >
+                    <table ID="tblMainUser" runat="server"  visible="false">
                         <tr>
                     <td>No. of Resident(s)
                        </td>
