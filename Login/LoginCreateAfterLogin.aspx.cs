@@ -58,6 +58,8 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
 
     private void loadRoleWiseControl()
     {
+        if(getLogin().LoginID==1)
+        tbluserType.Visible = true;
         ddlMenuID.Enabled = ButtonManager.GetAllButtonsByPageURLnUserIDnButtonName("ddlMenuID", HttpContext.Current.Request.Url.AbsoluteUri, getLogin().LoginID.ToString());
         dlRole.Visible = ButtonManager.GetAllButtonsByPageURLnUserIDnButtonName("dlRole", HttpContext.Current.Request.Url.AbsoluteUri, getLogin().LoginID.ToString());
         dlProperty.Visible = ButtonManager.GetAllButtonsByPageURLnUserIDnButtonName("dlProperty", HttpContext.Current.Request.Url.AbsoluteUri, getLogin().LoginID.ToString());
