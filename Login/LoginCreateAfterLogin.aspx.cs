@@ -549,7 +549,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
     {
         if(!tbluserType.Visible)
         { return; }
-        if (rbtnUserType.SelectedValue != "MainUser") 
+        if (rbtnUserType.SelectedValue == "MainUser") 
         {
             trMainUser.Visible = false;
             tblMainUser.Visible = true;

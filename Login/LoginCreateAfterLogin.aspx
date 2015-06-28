@@ -186,7 +186,7 @@
                             <td>
                                 <asp:RadioButtonList ID="rbtnUserType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbtnUserType_SelectedIndexChanged" RepeatDirection="Horizontal" >
                                     <asp:ListItem Value="MainUser">Main User</asp:ListItem>
-                                    <asp:ListItem Value="OtherUser" Selected="True">Other User</asp:ListItem>
+                                    <asp:ListItem Value="OtherUser">Other User</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
                             </tr>
@@ -270,6 +270,7 @@
                     <table>
                         <tr>
                             <td>
+                                <asp:Label ID="Label6" runat="server" Text=" "></asp:Label>
                             </td>
                             <td>
                                 <asp:Label ID="lblMsg" runat="server" Text=""></asp:Label>
