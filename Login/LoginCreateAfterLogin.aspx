@@ -191,12 +191,9 @@
                             </td>
                             </tr>
                         <tr  ID="trMainUser" runat="server" visible="false">
-                            <td>Main User</td>
+                            <td></td>
                             <td>
-                                <asp:RadioButtonList ID="RadioButtonList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbtnUserType_SelectedIndexChanged" RepeatDirection="Horizontal" >
-                                    <asp:ListItem Value="MainUser">Main User</asp:ListItem>
-                                    <asp:ListItem Value="OtherUser" Selected="True">Other User</asp:ListItem>
-                                </asp:RadioButtonList>
+                                <asp:DropDownList ID="ddlLogin" runat="server"></asp:DropDownList>
                             </td>
                         </tr>
                     </table>

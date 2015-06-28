@@ -25,6 +25,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             loadPropertyGrid();
             btnUpdate.Visible = false;
             btnAdd.Visible = true;
+            loadLogin();
 
             trOldPassword.Visible = false;
             trPasswordEmptyMessage.Visible = false;
@@ -55,7 +56,19 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             ddlMenuID.SelectedItem.Text = "Resident Display";
         }
     }
+    private void loadLogin()
+    {
+        ListItem li = new ListItem("Select Main User...", "0");
+        ddlLogin.Items.Add(li);
 
+        List<Login> Logins = new List<Login>();
+        Logins = LoginManager.GetAllLogins();
+        foreach (Login login in Logins)
+        {
+            ListItem item = new ListItem(login.FirstName + " " + login.MiddleName + " " + login.LastName + " (" + login.LoginName.ToString() + ")", login.LoginID.ToString() + "-" + login.ExtraField1);
+            ddlLogin.Items.Add(item);
+        }
+    }
     private void loadRoleWiseControl()
     {
         if(getLogin().LoginID==1)
@@ -371,6 +384,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         ddlRowStatus.SelectedValue = login.RowStatusID.ToString();
         ddlMenuID.SelectedValue = login.ExtraField2.Trim();
         txtInitial.Text = login.ExtraField4;
+        loadBedCount(login.LoginID);
         if (login.ExtraField1 != "")
         {
             //when Single role
@@ -456,6 +470,29 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             }
         }
     }
+
+    private void loadBedCount(int loginID)
+    {
+        string sql = @"Select * from Login_Login where LoginID="+loginID;
+
+        DataSet ds = CommonManager.SQLExec(sql);
+        if (ds.Tables[0].Rows[0]["LoginID"].ToString() == ds.Tables[0].Rows[0]["RootUser"].ToString())
+        {
+            rbtnUserType.SelectedValue = "MainUser";
+            rbtnUserType_SelectedIndexChanged(this, new EventArgs());
+
+            txtResidentNumber.Text = ds.Tables[0].Rows[0]["ExtraField9"].ToString();
+        }
+        else
+        {
+            rbtnUserType.SelectedValue = "OtherUser";
+            rbtnUserType_SelectedIndexChanged(this, new EventArgs());
+
+            ddlLogin.SelectedValue = ds.Tables[0].Rows[0]["RootUser"].ToString();
+        }
+
+
+    }
     private void loadRowStatus()
     {
         ListItem li = new ListItem("Select >>", "0");
@@ -487,6 +524,8 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
     }
     protected void rbtnUserType_SelectedIndexChanged(object sender, EventArgs e)
     {
+        if(!tbluserType.Visible)
+        { return; }
         if (rbtnUserType.SelectedValue == "MainUser") 
         {
             trMainUser.Visible = false;
