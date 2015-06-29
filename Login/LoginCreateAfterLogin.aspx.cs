@@ -25,6 +25,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             loadPropertyGrid();
             btnUpdate.Visible = false;
             btnAdd.Visible = true;
+            loadLogin();
 
             trOldPassword.Visible = false;
             trPasswordEmptyMessage.Visible = false;
@@ -55,9 +56,23 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             ddlMenuID.SelectedItem.Text = "Resident Display";
         }
     }
+    private void loadLogin()
+    {
+        ListItem li = new ListItem("Select Main User...", "0");
+        ddlLogin.Items.Add(li);
 
+        List<Login> Logins = new List<Login>();
+        Logins = LoginManager.GetAllLogins();
+        foreach (Login login in Logins)
+        {
+            ListItem item = new ListItem(login.FirstName + " " + login.MiddleName + " " + login.LastName + " (" + login.LoginName.ToString() + ")", login.LoginID.ToString() + "-" + login.ExtraField1);
+            ddlLogin.Items.Add(item);
+        }
+    }
     private void loadRoleWiseControl()
     {
+        if(getLogin().LoginID==1)
+        tbluserType.Visible = true;
         ddlMenuID.Enabled = ButtonManager.GetAllButtonsByPageURLnUserIDnButtonName("ddlMenuID", HttpContext.Current.Request.Url.AbsoluteUri, getLogin().LoginID.ToString());
         dlRole.Visible = ButtonManager.GetAllButtonsByPageURLnUserIDnButtonName("dlRole", HttpContext.Current.Request.Url.AbsoluteUri, getLogin().LoginID.ToString());
         dlProperty.Visible = ButtonManager.GetAllButtonsByPageURLnUserIDnButtonName("dlProperty", HttpContext.Current.Request.Url.AbsoluteUri, getLogin().LoginID.ToString());
@@ -200,10 +215,38 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         login.ExtraField9 = "";
         login.ExtraField10 = "";
         int resutl = LoginManager.InsertLogin(login);
+        if (tbluserType.Visible) {
+            if (rbtnUserType.SelectedValue == "OtherUser")
+            {
+                CommonManager.SQLExec("update Login_Login set  RootUser="+ddlLogin.SelectedValue+" where LoginID=" + resutl);
+            }
+            else
+            {
+                string sql = @"update [Login_Login] set [ExtraField5]='" + txtCardHolderName.Text + @"'
+                 ,[ExtraField6]='" + txtCardNO.Text + @"'
+                 ,[ExtraField7]='" + txtExpireDate.Text + @"'
+                 ,[ExtraField8]='" + txtCSC.Text + @"@" + ddlCardType.SelectedValue + @"'
+                 ,[ExtraField9]='" + txtResidentNumber.Text + @"'
+                 ,[ExtraField10]='" + ((decimal.Parse(txtResidentNumber.Text) * decimal.Parse("1.00")) + decimal.Parse("99.00")).ToString("0.00") + @"'
+                ,RootUser =" + resutl + @",[AddedResident]=0             
+                where [LoginID]=" + resutl;
 
+                CommonManager.SQLExec(sql);
+            }
+        }
+        else
+        {
+            CommonManager.SQLExec("update Login_Login set  RootUser=(select RootUser from Login_Login where LoginID=" + getLogin().LoginID + ") where LoginID=" + resutl);
+            
+        }
         lblMsg.Text = "Added Successfully<br/>";
         lblMsg.ForeColor = System.Drawing.Color.Green;
         //Response.Redirect("AdminLoginDisplay.aspx");
+    }
+
+    private void updateBedInformation(int LoginID)
+    {
+        
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
@@ -266,14 +309,34 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         tempLogin.ExtraField2 = ddlMenuID.SelectedValue;
         tempLogin.ExtraField3 = getSelectedPropertyIDs();
         tempLogin.ExtraField4 = txtInitial.Text;
-        tempLogin.ExtraField5 = "";
-        tempLogin.ExtraField6 = "";
-        tempLogin.ExtraField7 = "";
-        tempLogin.ExtraField8 = "";
-        tempLogin.ExtraField9 = "";
-        tempLogin.ExtraField10 = ""; 
+        tempLogin.ExtraField5 = login.ExtraField5;
+        tempLogin.ExtraField6 = login.ExtraField6;
+        tempLogin.ExtraField7 = login.ExtraField7;
+        tempLogin.ExtraField8 = login.ExtraField8;
+        tempLogin.ExtraField9 = login.ExtraField9;
+        tempLogin.ExtraField10 = login.ExtraField10; 
         bool result = LoginManager.UpdateLogin(tempLogin);
+        if (tbluserType.Visible)
+        {
+            if (rbtnUserType.SelectedValue == "OtherUser")
+            {
+                CommonManager.SQLExec("update Login_Login set  RootUser=" + ddlLogin.SelectedValue + " where LoginID=" + tempLogin.LoginID);
+            }
+            else
+            {
+                string sql = @"update [Login_Login] set --[ExtraField5]='" + txtCardHolderName.Text + @"'
+                 --,[ExtraField6]='" + txtCardNO.Text + @"'
+                 --,[ExtraField7]='" + txtExpireDate.Text + @"'
+                --- ,[ExtraField8]='" + txtCSC.Text + @"@" + ddlCardType.SelectedValue + @"'
+                 --,
+                    [ExtraField9]='" + txtResidentNumber.Text + @"'
+                 ,[ExtraField10]='" + ((decimal.Parse(txtResidentNumber.Text) * decimal.Parse("1.00")) + decimal.Parse("99.00")).ToString("0.00") + @"'
+                --,RootUser =" + tempLogin.LoginID + @",[AddedResident]=0             
+                where [LoginID]=" + tempLogin.LoginID;
 
+                CommonManager.SQLExec(sql);
+            }
+        }
         lblMsg.Text = "Updated Successfully<br/>";
         lblMsg.ForeColor = System.Drawing.Color.Green;
         
@@ -344,6 +407,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         ddlRowStatus.SelectedValue = login.RowStatusID.ToString();
         ddlMenuID.SelectedValue = login.ExtraField2.Trim();
         txtInitial.Text = login.ExtraField4;
+        loadBedCount(login.LoginID);
         if (login.ExtraField1 != "")
         {
             //when Single role
@@ -429,6 +493,29 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             }
         }
     }
+
+    private void loadBedCount(int loginID)
+    {
+        string sql = @"Select * from Login_Login where LoginID="+loginID;
+
+        DataSet ds = CommonManager.SQLExec(sql);
+        if (ds.Tables[0].Rows[0]["LoginID"].ToString() == ds.Tables[0].Rows[0]["RootUser"].ToString())
+        {
+            rbtnUserType.SelectedValue = "MainUser";
+            rbtnUserType_SelectedIndexChanged(this, new EventArgs());
+
+            txtResidentNumber.Text = ds.Tables[0].Rows[0]["ExtraField9"].ToString();
+        }
+        else
+        {
+            rbtnUserType.SelectedValue = "OtherUser";
+            rbtnUserType_SelectedIndexChanged(this, new EventArgs());
+
+            ddlLogin.SelectedValue = ds.Tables[0].Rows[0]["RootUser"].ToString();
+        }
+
+
+    }
     private void loadRowStatus()
     {
         ListItem li = new ListItem("Select >>", "0");
@@ -457,5 +544,22 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             ListItem item = new ListItem(dr["ModuleName"].ToString() + " - " + dr["MenuTitle"].ToString(), dr["FolderName"].ToString() + "/" + dr["PageURL"].ToString());
             ddlMenuID.Items.Add(item);
         }
+    }
+    protected void rbtnUserType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(!tbluserType.Visible)
+        { return; }
+        if (rbtnUserType.SelectedValue == "MainUser") 
+        {
+            trMainUser.Visible = false;
+            tblMainUser.Visible = true;
+        }
+        else
+        {
+            trMainUser.Visible = true;
+            tblMainUser.Visible = false;
+        }
+
+
     }
 }

@@ -178,8 +178,99 @@
                                 </asp:DropDownList>
                             </td>
                         </tr>
+                        
+                    </table>
+                    <table ID="tbluserType" runat="server" visible="false">
+                        <tr>
+                            <td>Type</td>
+                            <td>
+                                <asp:RadioButtonList ID="rbtnUserType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="rbtnUserType_SelectedIndexChanged" RepeatDirection="Horizontal" >
+                                    <asp:ListItem Value="MainUser">Main User</asp:ListItem>
+                                    <asp:ListItem Value="OtherUser">Other User</asp:ListItem>
+                                </asp:RadioButtonList>
+                            </td>
+                            </tr>
+                        <tr  ID="trMainUser" runat="server" visible="false">
+                            <td></td>
+                            <td>
+                                <asp:DropDownList ID="ddlLogin" runat="server"></asp:DropDownList>
+                            </td>
+                        </tr>
+                    </table>
+                    <table ID="tblMainUser" runat="server"  visible="false">
+                        <tr>
+                    <td>No. of Resident(s)
+                       </td>
+                
+                    <td>
+                        <asp:TextBox ID="txtResidentNumber"  onkeyup="calculation()" runat="server" ></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Registration Fee
+                       </td>
+                
+                    <td><asp:TextBox ID="txtRegistrationFee" runat="server" Enabled="false" Text="$199"></asp:TextBox>
+                        </td>
+                </tr>
+                <tr>
+                    <td>Discount(If TORCH Member)
+                       </td>
+                    <td><asp:TextBox ID="txtDiscount" runat="server" Enabled="false" Text="$100"></asp:TextBox>
+                        </td>
+                </tr>
+                <tr>
+                    <td>Total Amount
+                       </td>
+                    <td><asp:TextBox ID="txtTotalAmount" runat="server" Enabled="false" Width="100%" Font-Bold="true"></asp:TextBox>
+                        </td>
+                </tr>
+                <tr style="display:none;">
+                    <td>Card Type
+                       </td>
+                    <td>
+                        <asp:DropDownList ID="ddlCardType" runat="server">
+                            <asp:ListItem Value="MasterCard">MasterCard</asp:ListItem>
+                            <asp:ListItem Value="Visa">Visa</asp:ListItem>
+                            <asp:ListItem Value="Discover">Discover</asp:ListItem>
+                            <asp:ListItem Value="American Express">American Express</asp:ListItem>
+                        </asp:DropDownList>
+                        </td>
+                </tr>
+                <tr style="display:none;">
+                    <td>Name on Card
+                       </td>
+                   <td>
+                        <asp:TextBox ID="txtCardHolderName"   runat="server"></asp:TextBox>
+                        </td>
+                </tr>
+                <tr style="display:none;">
+                    <td>Card No.
+                       </td>
+                    <td>
+                        <asp:TextBox ID="txtCardNO"  runat="server"  ></asp:TextBox>
+                        </td>
+                </tr>
+                <tr style="display:none;">
+                    <td>Expire Date</td>
+                    <td>
+                        <asp:TextBox ID="txtExpireDate"  runat="server" placeholder="MM/yyyy" ></asp:TextBox>
+                        </td>
+                </tr>
+                <tr style="display:none;">
+                    <td>Security Code
+                   
+                       </td>
+                    <td>
+                        <asp:TextBox ID="txtCSC"  runat="server"  ></asp:TextBox>
+                        </td>
+                </tr>
+
+                    </table>
+                    <table>
                         <tr>
                             <td>
+                                <asp:Label ID="Label6" runat="server" Text=" "></asp:Label>
                             </td>
                             <td>
                                 <asp:Label ID="lblMsg" runat="server" Text=""></asp:Label>

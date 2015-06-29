@@ -220,7 +220,8 @@ public partial class AdminResidentInsertUpdate : System.Web.UI.Page
         resident.ExtraField9 = "";
         resident.ExtraField10 = ddlStatus.SelectedValue;
         int resutl = ResidentManager.InsertResident(resident);
-        Response.Redirect("AdminResidentInsertUpdate.aspx?residentID="+resutl.ToString());
+        CommonManager.SQLExec("update Login_Login set AddedResident+=1 where LoginID=(Select RootUser from Login_Login where LoginID=" + getLogin().LoginID + ")");
+        Response.Redirect("AdminResidentInsertUpdate.aspx?residentID=" + resutl.ToString());
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
