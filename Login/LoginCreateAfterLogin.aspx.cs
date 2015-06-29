@@ -65,7 +65,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
         Logins = LoginManager.GetAllLogins();
         foreach (Login login in Logins)
         {
-            ListItem item = new ListItem(login.FirstName + " " + login.MiddleName + " " + login.LastName + " (" + login.LoginName.ToString() + ")", login.LoginID.ToString() + "-" + login.ExtraField1);
+            ListItem item = new ListItem(login.FirstName + " " + login.MiddleName + " " + login.LastName + " (" + login.LoginName.ToString() + ")", login.LoginID.ToString());
             ddlLogin.Items.Add(item);
         }
     }
