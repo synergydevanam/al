@@ -26,6 +26,7 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             btnUpdate.Visible = false;
             btnAdd.Visible = true;
             loadLogin();
+            loadRoleWiseControl();
 
             trOldPassword.Visible = false;
             trPasswordEmptyMessage.Visible = false;
@@ -47,7 +48,6 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
             
             }
 
-            loadRoleWiseControl();
             foreach (ListItem item in ddlMenuID.Items)
             {
                 item.Selected = false;

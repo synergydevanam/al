@@ -8,6 +8,14 @@
             text-align: left;
         }
     </style>
+     <script language="JavaScript" type="text/javascript">
+         function calculation() {
+             var noOfResident = document.getElementById("<%=txtResidentNumber.ClientID%>").value;
+             var subtotalAmount = (noOfResident * 1.00);
+             var totalAmount = (noOfResident * 1.00) + 99.00;
+             document.getElementById("<%=txtTotalAmount.ClientID%>").value = '[((' + noOfResident + ' X $1) = ' + '$' + subtotalAmount.toFixed(0) + ') + ($199 - $100)]= $' + totalAmount.toFixed(0);
+         }
+</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="tableCss">
