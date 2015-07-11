@@ -92,7 +92,7 @@
                                     </td>
                                     <td>
                                         <%--For Multiple time please give (,). Format hh:mm AM/PM--%>
-                                        <asp:TextBox ID="txtTakingTime" runat="server" Text="" Width="60px">
+                                        <asp:TextBox ID="txtTakingTime" runat="server" Text="" Width="60px" ReadOnly="true">
                                         </asp:TextBox>
                                         Or
                                         <asp:CheckBox ID="chkPRN" runat="server" Text="PRN" />
