@@ -64,7 +64,7 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
 
         //Initial 
         html += "<table  border='0' class='reportTable'><tr>";
-        html += "<tr><td colspan='4'></td>";
+        html += "<tr><td>Time</td><td>Medication</td><td>Strength</td><td>Direction</td>";
         
         int totalDayOfthisMonth = 0;
         for (int i = 0; startDate.AddDays(i) <= endDate; i++)
