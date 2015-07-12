@@ -34,7 +34,7 @@
                                 <td style="border-bottom:1px solid #8E8F8F;width:420px;">
                                     <asp:Label ID="lblAdmittedFrom" runat="server" Text=""></asp:Label>
                                 </td>
-                                <td style="width:85px;font-weight:bold;">ADMITED DATE</td>
+                                <td style="width:85px;font-weight:bold;">ADMIT DATE</td>
                                 <td style="border-bottom:1px solid #8E8F8F;width:270px;">
                                     <asp:Label ID="lblAdmitedDate" runat="server" Text=""></asp:Label>
                                 </td>

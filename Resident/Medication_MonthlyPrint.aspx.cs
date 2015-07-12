@@ -63,7 +63,7 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
         string html = "";
 
         //Initial 
-        html += "<table  border='0' class='reportTable'><tr>";
+        html += "<table  border='0'  vclass='reportTable'><tr>";
         html += "<tr><td>Time</td><td>Medication</td><td>Strength</td><td>Direction</td>";
         
         int totalDayOfthisMonth = 0;
