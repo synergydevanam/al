@@ -19,9 +19,10 @@
                                 <asp:GridView ID="gvMedicaiton" runat="server" Width="100%" AutoGenerateColumns="false"
                                     ShowHeader="true">
                                     <Columns>
-                                        <asp:TemplateField HeaderText="DATE ISSUED">
+                                        <asp:TemplateField HeaderText="TIME">
                                             <ItemTemplate>
-                                                <%#Eval("AddedDate","{0:MM/dd/yyyy}")%>
+                                                <%--<%#Eval("AddedDate","{0:MM/dd/yyyy}")%>--%>
+                                                <%#Eval("TakingTime")%>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="RX#">
