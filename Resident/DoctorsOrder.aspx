@@ -156,6 +156,84 @@
                                         </td>
                                 </tr>
                             </table>
+                            <div class="sub_form" id="fileUpload" runat="server">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <p>
+                            Document Upload</p>
+                    </td>
+                    <td style="float: right; padding-right: 8px;">
+                        <p>
+                            <asp:Label ID="Label3" runat="server" ForeColor="Green" Text="Upload Successfully"
+                                Visible="false"></asp:Label>
+                            <asp:Button ID="Button1" runat="server" Text="Add" OnClick="btnUpload_Click" class="add_btn" />
+                            <%--<asp:Button ID="Button2" runat="server" Text="Update" class="add_btn" Visible="false"
+                                OnClick="btnUpload_Click" />--%>
+                            <%--<asp:Button ID="Button4" runat="server" Text="Clear" class="add_btn" Visible="false"
+                                OnClick="btnClear_Click" />--%>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <ul>
+                            <li class="text_box">Select File </li>
+                            <li class="text_input1">
+                                <asp:FileUpload ID="uplFile" runat="server" onchange="checkFileExtension(this);" />
+                            </li>
+                            </ul>
+                            </td>
+                            </tr>
+                <tr>
+                    <td> <ul>
+                            <li class="text_box">File Description </li>
+                            <li class="text_input1">
+                                <asp:TextBox ID="txDocumentDetails" runat="server" Text=""></asp:TextBox>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+            <asp:GridView ID="gvDocument" runat="server" AutoGenerateColumns="false"  HeaderStyle-CssClass="grid_head_css"  CssClass="grid">
+                <HeaderStyle BackColor="#DFEAF5" />
+                <Columns>
+                    <%--<asp:TemplateField HeaderText="No">
+                        <ItemTemplate>
+                            <asp:Label ID="lblDocumentID" runat="server" Text='<%#Eval("DocumentID") %>'>
+                            </asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>--%>
+                    <asp:TemplateField HeaderText="Description">
+                        <ItemTemplate>
+                            <asp:Label ID="lblDetails" runat="server" Text='<%#Eval("Details") %>'>
+                            </asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Document">
+                        <ItemTemplate>
+                            <span>
+                                <a  style="color:Blue;text-decoration:underline;" href='<%#Eval("FileName") %>' target="_blank">View</a>
+                            <%--<asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%#Eval("FileName") %>'
+                                Target="_blank" Text="View"></asp:HyperLink>--%></span>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Delete">
+                        <ItemTemplate>
+                             <asp:LinkButton ID="lbSelect" runat="server" ToolTip='<%#Eval("FileName") %>' CommandArgument='<%#Eval("DocumentID") %>' OnClientClick="return confirm('Are you sure you want to delete?')" OnClick="lbSelect_Click">
+                            Delete
+                        </asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+            </td>
+                </tr>
+            </table>
+        </div>
                         </div>
                     </td>
                 </tr>

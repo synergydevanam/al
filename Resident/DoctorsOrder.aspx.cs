@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.IO;
 
 public partial class Resident_ADLRecord : System.Web.UI.Page
 {
@@ -17,9 +18,117 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
                 laodResitentInfo();
                 loadGrid();
                 loadDoctorsOrderDate();
+                showDocument();
                 txtOrderDate.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
             }
         }
+    }
+    protected void btnUpload_Click(object sender, EventArgs e)
+    {
+
+        if (uplFile.PostedFile != null && uplFile.PostedFile.ContentLength > 0)
+        {
+            string dirUrl = "ResidentFile";
+            string dirPath = Server.MapPath(dirUrl);
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            string fileName = Path.GetFileName(uplFile.PostedFile.FileName);
+
+            if (fileName.Split('.')[1].Contains("php")
+                ||
+                fileName.Split('.')[1].Contains("aspx")
+                ||
+                fileName.Split('.')[1].Contains("asp")
+                )
+            {
+
+                Label1.Text = "Wrong File!!";
+                Label1.ForeColor = System.Drawing.Color.Red;
+                Label1.Visible = true;
+                return;
+            }
+            else
+            {
+                Label1.Visible = false;
+                Label1.Text = "Update Successfully";
+                Label1.ForeColor = System.Drawing.Color.Green;
+            }
+
+            getFileName file = new getFileName(fileName, dirPath);
+            string fileUrl = dirUrl + "/" + file.FileName;//Path.GetFileName(uplFile.PostedFile.FileName);
+            string filePath = Server.MapPath(fileUrl);
+            uplFile.PostedFile.SaveAs(filePath);
+
+            var clientId = int.Parse(Request.QueryString["residentID"]);
+
+            Document dm = new Document();
+            dm.ClientID = clientId;
+            dm.Details = txDocumentDetails.Text;
+            dm.FileName = dirUrl + "/" + file.FileName;
+
+            string sql = @"
+INSERT INTO [AL_DoctorOrderDocument]
+           ([ResidentID]
+           ,[Details]
+           ,[FileName])
+     VALUES
+           (" + Request.QueryString["residentID"] + ",'" + dm.Details + @"','" + dm.FileName + @"');
+";
+            CommonManager.SQLExec(sql);
+            txDocumentDetails.Text = "";
+            showDocument();
+
+        }
+    }
+
+    protected void lbSelect_Click(object sender, EventArgs e)
+    {
+        LinkButton linkButton = new LinkButton();
+        linkButton = (LinkButton)sender;
+        int id;
+        id = Convert.ToInt32(linkButton.CommandArgument);
+
+        DocumentManager.DeleteDocument(int.Parse(linkButton.CommandArgument));
+        String sql = @"
+Delete FROM AL_DoctorOrderDocument
+    WHERE [DocumentID]  = " + linkButton.CommandArgument + @" ;
+";
+
+       CommonManager.SQLExec(sql);
+        DeleteFileFromFolder(linkButton.ToolTip.Split('/')[1]);
+        showDocument();
+    }
+
+    public void DeleteFileFromFolder(string StrFilename)
+    {
+
+        try
+        {
+            string strPhysicalFolder = Server.MapPath("..\\Resident\\ResidentFile\\");
+            string strFileFullPath = strPhysicalFolder + StrFilename;
+
+            if (System.IO.File.Exists(strFileFullPath))
+            {
+                System.IO.File.Delete(strFileFullPath);
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+    private void showDocument()
+    {
+        String sql = @"
+SELECT * FROM AL_DoctorOrderDocument
+    WHERE [ResidentID]  = " + Request.QueryString["ResidentID"] + @" ;
+";
+
+        gvDocument.DataSource = CommonManager.SQLExec(sql).Tables[0] ;
+        gvDocument.DataBind();
     }
 
     private void loadDoctorsOrderDate()
