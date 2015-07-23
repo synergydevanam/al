@@ -46,7 +46,7 @@
     </div>
     <!-- END ID LEFT_BAR -->
     <div id="right_bar">
-      <div id="search_box">
+      <div id="search_box" style="display:none;">
        <span style="margin:5px;"> <img src="search_icon.png" alt="" /></span>
        <asp:TextBox ID="txtSearchKey" runat="server" style="width:200px;hight:20px;border:0;background:#dee5e9;" ></asp:TextBox>
       </div>
