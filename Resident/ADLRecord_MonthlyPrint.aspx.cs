@@ -92,19 +92,22 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
                 bool isFount = false;
                 foreach (DataRow drAllData in dsAllData.Tables[0].Rows)
                 {
-                    if (headerDetail.ADLHeaderDetailID.ToString() == drAllData["ADLHeaderDetailID"].ToString() && startDate.AddDays(i).ToString("yyyy-MM-dd") == DateTime.Parse(drAllData["ADLDateTime"].ToString()).ToString("yyyy-MM-dd"))
+                    if (headerDetail.ADLHeaderDetailID.ToString() == drAllData["ADLHeaderDetailID"].ToString()
+                        && startDate.AddDays(i).ToString("yyyy-MM-dd") == DateTime.Parse(drAllData["ADLDateTime"].ToString()).ToString("yyyy-MM-dd")
+                        && drAllData["ExtraField1"].ToString() != ""
+                        )
                     {
                         isFount = true;
-                        if (drAllData["ExtraField1"].ToString() == "")
-                        {
-                            html += "<td></td>";
-                            break;
-                        }
-                        else
-                        {
+                        //if (drAllData["ExtraField1"].ToString() == "")
+                        //{
+                        //    html += "<td></td>";
+                        //    break;
+                        //}
+                        //else
+                        //{
                             html += "<td style='background-color:#DDDDDD;color:Black;'>" + drAllData["ExtraField1"].ToString() + "<br/>[" + drAllData["ExtraField2"].ToString() + "]</td>";
                             break;
-                        }
+                        //}
                     }
                 }
 
