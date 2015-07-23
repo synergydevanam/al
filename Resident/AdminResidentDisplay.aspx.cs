@@ -112,7 +112,8 @@ public partial class AdminResidentDisplay : System.Web.UI.Page
     }
     protected void ddlPropertyID_SelectedIndexChanged(object sender, EventArgs e)
     {
-        string searchString = "Where 1=1 " + (ddlStatus.SelectedValue == "All" ? "" : "and AL_Resident.ExtraField10='" + ddlStatus.SelectedValue + "'");
+        //string searchString = "Where 1=1 " + (ddlStatus.SelectedValue == "All" ? "" : "and AL_Resident.ExtraField10='" + ddlStatus.SelectedValue + "'");
+        string searchString = "Where " + (ddlStatus.SelectedValue == "All" ? "" : "AL_Resident.ExtraField10='" + ddlStatus.SelectedValue + "' and") + " AL_Resident.ExtraField1 in ('0" + (getLogin().ExtraField3 == "" ? "" : "','" + getLogin().ExtraField3.Replace(",", "','")) + "')";
 
         if (ddlPropertyID.SelectedIndex!=0)
         {
