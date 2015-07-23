@@ -346,6 +346,17 @@ public partial class AdminResidentInsertUpdate : System.Web.UI.Page
         tempResident.ExtraField8 = txtExtraField8.Text;
         tempResident.ExtraField9 = "";
         tempResident.ExtraField10 = ddlStatus.SelectedValue;
+        //making an active to inactive
+        if (resident.ExtraField10 != ddlStatus.SelectedValue && resident.ExtraField10 == "InActive")
+        {
+            CommonManager.SQLExec("update Login_Login set AddedResident+=1 where LoginID=(Select RootUser from Login_Login where LoginID=" + getLogin().LoginID + ")");
+        }
+        else
+            //making an inactive to active
+            if (resident.ExtraField10 != ddlStatus.SelectedValue && resident.ExtraField10 == "Active")
+            {
+                CommonManager.SQLExec("update Login_Login set AddedResident-=1 where LoginID=(Select RootUser from Login_Login where LoginID=" + getLogin().LoginID + ")");
+            }
         bool result = ResidentManager.UpdateResident(tempResident);
         updateBillingAddress();
 
