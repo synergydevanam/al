@@ -87,85 +87,36 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
             html += "<tr><td>" + headerDetail.ExtraField1 + "</td><td>" + headerDetail.ExtraField2 + "</td>";
             //html += "</tr>" + "<tr><td>" + dr["MedicineName"] + "</td><td colspan='" + (totalDayOfthisMonth + 1).ToString() + "'>Report will goes here</td>";
 
-            if (headerDetail.ExtraField1 == "Bowel Movement")
+            for (int i = 0; startDate.AddDays(i) <= endDate; i++)
             {
-                #region for bowel movement only
-                for (int i = 0; startDate.AddDays(i) <= endDate; i++)
+                bool isFount = false;
+                foreach (DataRow drAllData in dsAllData.Tables[0].Rows)
                 {
-                    bool isFount = false;
-
-                    string bowelmovement = "";
-                    foreach (DataRow drAllData in dsAllData.Tables[0].Rows)
+                    if (headerDetail.ADLHeaderDetailID.ToString() == drAllData["ADLHeaderDetailID"].ToString()
+                        && startDate.AddDays(i).ToString("yyyy-MM-dd") == DateTime.Parse(drAllData["ADLDateTime"].ToString()).ToString("yyyy-MM-dd")
+                        && drAllData["ExtraField1"].ToString() != ""
+                        )
                     {
-                        if (headerDetail.ADLHeaderDetailID.ToString() == drAllData["ADLHeaderDetailID"].ToString()
-                            && startDate.AddDays(i).ToString("yyyy-MM-dd") == DateTime.Parse(drAllData["ADLDateTime"].ToString()).ToString("yyyy-MM-dd")
-                            && drAllData["ExtraField1"].ToString() != ""
-                            )
-                        {
-                            isFount = true;
-                            //if (drAllData["ExtraField1"].ToString() == "")
-                            //{
-                            //    html += "<td></td>";
-                            //    break;
-                            //}
-                            //else
-                            //{
-                            //break;
-                            //}
-
-                            bowelmovement += (bowelmovement == "" ? "" : "<hr/>") + drAllData["ExtraField1"].ToString() + "<br/>"+DateTime.Parse(drAllData["ADLDateTime"].ToString()).ToString("hh:mm tt")+"[" + drAllData["ExtraField2"].ToString() + "]";
-                        }
-                    }
-
-                    if (!isFount)
-                    {
-                        html += "<td></td>";
-                    }
-                    else
-                    {
-                        html += "<td style='background-color:#DDDDDD;color:Black;'>" +bowelmovement+ "</td>";
-                    }
-
-                }
-                #endregion
-            }
-            else
-            {
-                #region For others
-                for (int i = 0; startDate.AddDays(i) <= endDate; i++)
-                {
-                    bool isFount = false;
-                    foreach (DataRow drAllData in dsAllData.Tables[0].Rows)
-                    {
-                        if (headerDetail.ADLHeaderDetailID.ToString() == drAllData["ADLHeaderDetailID"].ToString()
-                            && startDate.AddDays(i).ToString("yyyy-MM-dd") == DateTime.Parse(drAllData["ADLDateTime"].ToString()).ToString("yyyy-MM-dd")
-                            && drAllData["ExtraField1"].ToString() != ""
-                            )
-                        {
-                            isFount = true;
-                            //if (drAllData["ExtraField1"].ToString() == "")
-                            //{
-                            //    html += "<td></td>";
-                            //    break;
-                            //}
-                            //else
-                            //{
+                        isFount = true;
+                        //if (drAllData["ExtraField1"].ToString() == "")
+                        //{
+                        //    html += "<td></td>";
+                        //    break;
+                        //}
+                        //else
+                        //{
                             html += "<td style='background-color:#DDDDDD;color:Black;'>" + drAllData["ExtraField1"].ToString() + "<br/>[" + drAllData["ExtraField2"].ToString() + "]</td>";
                             break;
-                            //}
-                        }
+                        //}
                     }
-
-                    if (!isFount)
-                    {
-                        html += "<td></td>";
-                    }
-
                 }
-                #endregion
-            }
 
-            
+                if (!isFount)
+                {
+                    html += "<td></td>";
+                }
+                
+            }
 
             html += "</tr>";
         }
