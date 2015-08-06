@@ -58,7 +58,7 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
     private void loadList()
     {
         DateTime startDate = DateTime.Parse(ddlYears.SelectedValue + "-" + ddlMonths.SelectedValue + "-1");
-        DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+        DateTime endDate = startDate.AddMonths(1).AddDays(-1).AddHours(23);
 
         string html = "";
 

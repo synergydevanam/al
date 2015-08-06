@@ -27,7 +27,7 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
     {
         ListItem li = new ListItem("Select >>", "0");
         ListItem liView = new ListItem("-- All --", "0");
-        ddlObservationType.Items.Add(li);
+        //ddlObservationType.Items.Add(li);
         ddlObservationTypeForView.Items.Add(liView);
 
         List<ObservationType> observationTypes = new List<ObservationType>();
@@ -38,6 +38,8 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
             ddlObservationType.Items.Add(item);
             ddlObservationTypeForView.Items.Add(item);
         }
+
+        ddlObservationType.SelectedValue = "4";
     }
 
     private void laodResitentInfo()
