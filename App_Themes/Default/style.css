@@ -358,7 +358,8 @@ padding:12px 0 12px 12px;
 	.Print .single_colom{
 	background:#FFF url(images/form1_bg1.png) repeat-x;	
 	width:100%;
-	border:1px solid #555bb9;
+	border:1px solid #fff;
+	/*border:1px solid #555bb9;*/
 	/*padding:15px 0 0 10px;*/
 	border-radius:5px;
 	-moz-border-radius:5px;
