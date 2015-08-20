@@ -186,7 +186,7 @@ public partial class LoginPage : System.Web.UI.Page
                 )
             {
             lblMsg.Text="Thanks for the request. Check your email to recover the password. If you do not receive any password within 24 hour, you may have registered with a different email address. Please contact us <a href='mailto:info@caregivermax'>info@caregivermax.com</a> for help.";
-            //lblMsg.ForeColor = System.Drawing.Color.Green;
+            lblMsg.ForeColor = System.Drawing.Color.Green;
             //btnResetPasswrd.Visible = false;
             loadLoginPage();
             div_RessetPassword.Visible = false;
