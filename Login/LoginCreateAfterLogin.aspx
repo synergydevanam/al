@@ -84,7 +84,7 @@
                                     then keep Password fields Empty</p>
                             </td>
                         </tr>
-                        <tr id="trOldPassword" runat="server">
+                        <tr id="trOldPassword" runat="server" visible="false">
                             <td>
                                 <asp:Label ID="Label4" runat="server" Text="Old Password: ">
                     </asp:Label>

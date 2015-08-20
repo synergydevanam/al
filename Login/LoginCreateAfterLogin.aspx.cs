@@ -278,13 +278,14 @@ public partial class AdminLoginInsertUpdate : System.Web.UI.Page
 
         if (txtPassword.Text != "")
         {
+            /*
             if (hfPassword.Value != txtOldPassword.Text)
             {
                 lblMsg.Text = "Old Password Does not match<br/>";
                 lblMsg.ForeColor = System.Drawing.Color.Red;
                 return;
             }
-
+            */
             tempLogin.Password = txtPassword.Text;
         }
         else

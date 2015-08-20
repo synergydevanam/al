@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
 
 public partial class LoginPage : System.Web.UI.Page
 {
@@ -12,17 +13,44 @@ public partial class LoginPage : System.Web.UI.Page
 
         if (!IsPostBack)
         {
+            
             if (Request.QueryString["logout"] != null)
             {
                 btnLogout_OnClick(this, new EventArgs());
             }
-            else
+            
+
+            if (Request.QueryString["passwordrecovary"] != null)
             {
                 //loginCheck();
+                div_Login.Visible = false;
+                div_PasswordRecovary.Visible = true;
+                btnResetPasswrd.Visible = true;
+                btnLogin.Visible = false;
+                div_PasswordRecovaryEmail.Visible = true;
+                div_RessetPassword.Visible = false;
+            }
+            else
+            {
+                div_Login.Visible = true;
+                div_PasswordRecovary.Visible = false;
+                btnResetPasswrd.Visible = false;
+                btnLogin.Visible = true;
+                div_PasswordRecovaryEmail.Visible = false;
+                div_RessetPassword.Visible = true;
             }
         }
     }
-
+    private void loadLoginPage()
+    {
+        div_Login.Visible = true;
+        div_PasswordRecovary.Visible = false;
+        btnResetPasswrd.Visible = false;
+        btnLogin.Visible = true;
+        div_PasswordRecovaryEmail.Visible = false;
+        div_RessetPassword.Visible = true;
+        
+    }
     private void loginCheck()
     {
         bool isloggedIN = false;
@@ -141,5 +169,33 @@ public partial class LoginPage : System.Web.UI.Page
         }
        // string str = Request.Url.ToString();
         Response.Redirect("LoginPage.aspx");
+    }
+    protected void lbtnResetPassword_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("LoginPage.aspx?passwordrecovary=1");
+    }
+    protected void btnResetPasswrd_Click(object sender, ImageClickEventArgs e)
+    {
+        //Response.Redirect("LoginPage.aspx");
+        DataSet ds = CommonManager.SQLExec("select Login_Login.LoginName,Login_Login.Password from Login_Login where Email='" + txtEmail.Text + "'");
+
+        if (ds.Tables[0].Rows.Count != 0)
+        {
+            if (
+                    Sendmail.sendEmail("info@caregivermax.com", "CareGiverMax Admin", txtEmail.Text, "anamuliut@gmail.com", "Password Recovary", "<table><tr><td>User Name</td><td>" + ds.Tables[0].Rows[0]["LoginName"].ToString() + "</td></tr><tr><td>Password</td><td>" + ds.Tables[0].Rows[0]["Password"].ToString() + "</td></tr></table>")
+                )
+            {
+            lblMsg.Text = @"Thanks for the request. Check your email to recover the password. If you do not receive any password within 24 hour, you may have registered with a different email address. Please contact us <a href='mailto:info@caregivermax'>info@caregivermax.com</a> for help.";
+            lblMsg.ForeColor = System.Drawing.Color.Green;
+            btnResetPasswrd.Visible = false;
+            loadLoginPage();
+            }
+        }
+        else
+        {
+            lblMsg.ForeColor = System.Drawing.Color.Red;
+            lblMsg.Text = "You are not registered here please <a href='http://www.caregivermax.com/Register.aspx'>register</a>"; 
+        }
+
     }
 }
