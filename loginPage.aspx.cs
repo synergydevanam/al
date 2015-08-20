@@ -185,7 +185,7 @@ public partial class LoginPage : System.Web.UI.Page
                     Sendmail.sendEmail("info@caregivermax.com", "CareGiverMax Admin", txtEmail.Text, "anamuliut@gmail.com", "Password Recovary", "<table border='1'><tr><td>User Name</td><td>" + ds.Tables[0].Rows[0]["LoginName"].ToString() + "</td></tr><tr><td>Password</td><td>" + ds.Tables[0].Rows[0]["Password"].ToString() + "</td></tr></table>")
                 )
             {
-            showAlartMessage("hanks for the request. Check your email to recover the password. If you do not receive any password within 24 hour, you may have registered with a different email address. Please contact us <a href='mailto:info@caregivermax'>info@caregivermax.com</a> for help.");
+            showAlartMessage("Thanks for the request. Check your email to recover the password. If you do not receive any password within 24 hour, you may have registered with a different email address. Please contact us <a href='mailto:info@caregivermax'>info@caregivermax.com</a> for help.");
             //lblMsg.ForeColor = System.Drawing.Color.Green;
             //btnResetPasswrd.Visible = false;
             loadLoginPage();
