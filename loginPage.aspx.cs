@@ -189,6 +189,8 @@ public partial class LoginPage : System.Web.UI.Page
             //lblMsg.ForeColor = System.Drawing.Color.Green;
             //btnResetPasswrd.Visible = false;
             loadLoginPage();
+            div_RessetPassword.Visible = false;
+
             }
         }
         else
