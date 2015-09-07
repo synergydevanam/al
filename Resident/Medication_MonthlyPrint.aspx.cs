@@ -104,7 +104,7 @@ public partial class Resident_ADLRecord : System.Web.UI.Page
                         html += "<td style='background-color:#DDDDDD;color:Black;'>" + drAllData["ExtraField3"].ToString() + "</td>";
                         foreach (Login item in allUser)
                         {
-                            if (item.ExtraField4 == drAllData["ExtraField3"].ToString() && !CareGiverList.Contains("(" + item.ExtraField4 + ")"))
+                            if (item.LoginID.ToString() == drAllData["LoginID"].ToString() && !CareGiverList.Contains("(" + item.ExtraField4 + ")"))
                             {
                                 CareGiverList+= (CareGiverList==""?"":", ")+item.FirstName+" "+item.LastName+"("+item.ExtraField4+")";
                                 break;
